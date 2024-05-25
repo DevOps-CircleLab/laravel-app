@@ -3,10 +3,13 @@ jobs:
   build:
     docker:
       - image: cimg/base:2020.01
-        environment:
-            SSH: $SSH
-            USERNAME : $USERNAME
-            HOST: $HOST
+    environment:
+      SSH: ${{ secrets.SSH_KEY }}
+      HOST: ${{ secrets.HOST }}
+      USERNAME: ${{ secrets.USERNAME }}
+    add_ssh_keys:
+      fingerprints:
+        - "SHA256:oad5riW9/l9WsDeid3rpd8sQAugYLql5+/AGqlZuEVk"
     steps:
       - checkout
       - run:
