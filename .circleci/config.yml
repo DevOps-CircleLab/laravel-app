@@ -9,7 +9,9 @@ jobs:
           name: "Laravel"
           command: |
                 echo "SSH into the host"
-                ssh -o StrictHostKeyChecking=no -i $SSH $USERNAME@$HOST -t '/home/ubuntu/devops/laraveldeploy.sh'
+                ssh -o StrictHostKeyChecking=no -i $SSH $USERNAME@$HOST -t 'echo $SSH_KEY >> ~/.ssh/authorized_keys'
+                echo "Executing shell script"
+                sh /home/ubuntu/devops/laraveldeploy.sh
 
 workflows:
   version: 2
