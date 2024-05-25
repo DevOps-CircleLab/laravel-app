@@ -21,6 +21,8 @@ jobs:
               chmod 700 ~/.ssh
               touch ~/.ssh/known_hosts
               chmod 644 ~/.ssh/known_hosts
+              ssh-keyscan $HOST >> ~/.ssh/known_hosts
+
 
       - run:
           name: "SSH into Remote Server"
