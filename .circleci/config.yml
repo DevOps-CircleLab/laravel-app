@@ -9,7 +9,7 @@ jobs:
           name: "Laravel"
           command: |
               echo "Preparing to deploy to production server"
-              echo "$SSH" | tr -d '\r' | ssh-add - > /dev/null
+              echo $SSH | tr -d '\r' | ssh-add - > /dev/null
               mkdir -p ~/.ssh
               chmod 700 ~/.ssh
               touch ~/.ssh/known_hosts
