@@ -12,7 +12,7 @@ jobs:
       - run:
           name: "SSH into Remote Server"
           command: |
-              ssh -o StrictHostKeyChecking=no ubuntu@54.179.150.73 -t 'cd /home/ubuntu/devops && /home/ubuntu/devops/laraveldeploy.sh'
+              ssh -o StrictHostKeyChecking=no ubuntu@54.179.150.73 -t 'sh /home/ubuntu/devops/laraveldeploy.sh'
         
 
 workflows:
