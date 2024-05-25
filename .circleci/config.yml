@@ -8,15 +8,8 @@ jobs:
       - run:
           name: "Laravel"
           command: |
-              echo "Preparing to deploy to production server"
-              echo $SSH | tr -d '\r' | ssh-add - > /dev/null
-              mkdir -p ~/.ssh
-              chmod 700 ~/.ssh
-              touch ~/.ssh/known_hosts
-              chmod 644 ~/.ssh/known_hosts
-              ssh-keyscan $HOST >> ~/.ssh/known_hosts
-              echo "Deploying to server"
-              ssh -o StrictHostKeyChecking=no $USERNAME@$HOST -t '/home/ubuntu/devops/laraveldeploy.sh'
+                echo "SSH into the host"
+                ssh -o StrictHostKeyChecking=no -i $SSH $USERNAME@$HOST -t '/home/ubuntu/devops/laraveldeploy.sh'
 
 workflows:
   version: 2
