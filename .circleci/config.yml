@@ -4,14 +4,14 @@ jobs:
     docker:
       - image: cimg/base:2020.01
     environment:
-      HOST: ${{ HOST }}
-      USERNAME: ${{ USERNAME }}
+      HOST: ${HOST}
+      USERNAME: ${USERNAME}
     steps:
       - checkout
       - run:
           name: "SSH into Remote Server"
           command: |
-              ssh -o StrictHostKeyChecking=no USERNAME@HOST -t 'sh /home/ubuntu/devops/laraveldeploy.sh'
+              ssh -o StrictHostKeyChecking=no ${USERNAME}@${HOST} -t 'sh /home/ubuntu/devops/laraveldeploy.sh'
         
 
 workflows:
