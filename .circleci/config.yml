@@ -5,16 +5,26 @@ jobs:
       - image: cimg/base:2020.01
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
-          name: "Login with SSH"
+          name: "Install SSH Client"
           command: |
-            ssh-keyscan $HOST >> ~/.ssh/known_hosts
-            ssh -i $USERNAME@$HOST
+              sudo apt-get update && sudo apt-get install -y openssh-client
+      - add_ssh_keys:
+          fingerprints:
+            - "{{ .Environment.SSH }}"
+      - run:
+          name: "SSH into Remote Server"
+          command: |
+              eval $(ssh-agent -s)
+              ssh-add ~/.ssh/id_rsa
+              ssh -o StrictHostKeyChecking=no {$USERNAME}@$HOST 'bash -s' < /home/ubuntu/devops/laraveldeploy.sh
+      - run:
+          name: "Cleanup SSH Agent"
+          command: |
+              ssh-agent -k
 
-      - run:
-          name: "Laravel"
-          command: |
-              /home/ubuntu/devops/laraveldeploy.sh
 
 workflows:
   version: 2
