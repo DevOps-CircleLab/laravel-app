@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "SSH into Remote Server"
+          name: "Deploy laravel App"
           command: |
               ssh -o StrictHostKeyChecking=no $USERNAME@$HOST -t 'sh /home/ubuntu/devops/laraveldeploy.sh'
         
