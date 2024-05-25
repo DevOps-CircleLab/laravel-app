@@ -9,8 +9,8 @@ jobs:
           name: "Laravel"
           command: |
               echo "Preparing to deploy to production server"
-              apk add openssh-client
-              'which ssh-agent || (apk add --update openssh)'
+              sudo apt add openssh-client
+              'which ssh-agent || (sudo apt add --update openssh)'
               eval $(ssh-agent -s)
               echo "$SSH" | tr -d '\r' | ssh-add - > /dev/null
               mkdir -p ~/.ssh
