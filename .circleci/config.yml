@@ -12,7 +12,6 @@ jobs:
     docker:
       - image: cimg/base:stable
     steps:
-      - checkout
       - ssh/ssh:
           command: "cd /home/ubuntu/devops && ./laraveldeploy.sh"
           fingerprints: ${SSHKEY}
