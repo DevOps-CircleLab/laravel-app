@@ -7,24 +7,13 @@ jobs:
       SSH: ${{ secrets.SSH_KEY }}
       HOST: ${{ secrets.HOST }}
       USERNAME: ${{ secrets.USERNAME }}
-    add_ssh_keys:
-      fingerprints:
-        - "SHA256:oad5riW9/l9WsDeid3rpd8sQAugYLql5+/AGqlZuEVk"
     steps:
       - checkout
       - run:
           name: "Install SSH Client"
           command: |
               sudo apt-get update && sudo apt-get install -y openssh-client
-      - run:
-          name: "Install SSH Key"
-          command: |
-              echo $SSH | tr -d '\r' | ssh-add - > /dev/null
-              mkdir -p ~/.ssh
-              chmod 700 ~/.ssh
-              touch ~/.ssh/known_hosts
-              chmod 644 ~/.ssh/known_hosts
-              ssh-keyscan $HOST >> ~/.ssh/known_hosts
+  
 
 
       - run:
