@@ -13,19 +13,16 @@ jobs:
           name: "Install SSH Client"
           command: |
               sudo apt-get update && sudo apt-get install -y openssh-client
-      - add_ssh_keys:
-          fingerprints:
-            - $SSH
+      - run:
+          name: "Install SSH Key"
+          command: |
+              mkdir -p ~/.ssh
+              echo "$SSH" | tr -d '\r' > ~/.ssh/id_rsa
+              chmod 600 ~/.ssh/id_rsa
+              ssh-keyscan $HOST >> ~/.ssh/known_hosts
       - run:
           name: "SSH into Remote Server"
           command: |
-              eval $(ssh-agent -s)
-              echo "$SSH" | tr -d '\r' | ssh-add - > /dev/null
-              mkdir -p ~/.ssh
-              chmod 700 ~/.ssh
-              touch ~/.ssh/known_hosts
-              chmod 644 ~/.ssh/known_hosts
-              ssh-keyscan $HOST >> ~/.ssh/known_hosts
               ssh -o StrictHostKeyChecking=no ubuntu@$HOST -t '/home/ubuntu/devops/deploy.sh'
       - run:
           name: "Cleanup SSH Agent"
