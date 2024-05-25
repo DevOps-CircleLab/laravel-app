@@ -3,23 +3,30 @@ jobs:
   build:
     docker:
       - image: cimg/base:2020.01
+        environment:
+            SSH: $SSH
+            USERNAME : $USERNAME
+            HOST: $HOST
     steps:
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
       - run:
           name: "Install SSH Client"
           command: |
               sudo apt-get update && sudo apt-get install -y openssh-client
       - add_ssh_keys:
           fingerprints:
-            - "{{ .Environment.SSH }}"
+            - "{ SSH }"
       - run:
           name: "SSH into Remote Server"
           command: |
               eval $(ssh-agent -s)
-              ssh-add ~/.ssh/id_rsa
-              ssh -o StrictHostKeyChecking=no {$USERNAME}@$HOST 'bash -s' < /home/ubuntu/devops/laraveldeploy.sh
+              echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+              mkdir -p ~/.ssh
+              chmod 700 ~/.ssh
+              touch ~/.ssh/known_hosts
+              chmod 644 ~/.ssh/known_hosts
+              ssh-keyscan $HOST >> ~/.ssh/known_hosts
+              ssh -o StrictHostKeyChecking=no ubuntu@$HOST -t '/home/ubuntu/devops/deploy.sh'
       - run:
           name: "Cleanup SSH Agent"
           command: |
