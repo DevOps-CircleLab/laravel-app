@@ -1,19 +1,22 @@
 version: 2.1
-orbs:
-  ssh: circleci/ssh@1.0.0
+jobs:
+  build:
+    docker:
+      - image: circleci/php:8.1-node-browsers
+    steps:
+      - checkout
+      - run:
+          name: "Laravel"
+          command: |
+            echo "Laravel App"
+            {SSH} {USERNAME}@{HOSTNAME} "cd /home/ubuntu/devops && ./laraveldeploy.sh"
+
 workflows:
   version: 2
-  deploy:
+  build:
     jobs:
-      - deploy-laravel
-
-jobs:
-  deploy-laravel:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - ssh/ssh:
-          command: "cd /home/ubuntu/devops && ./laraveldeploy.sh"
-          fingerprints: ${SSHKEY}
-          hosts: ${HOST}
-          user: ${USERNAME}
+      - build:
+          filters:
+            branches:
+              only:
+                - master
