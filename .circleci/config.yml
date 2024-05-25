@@ -8,9 +8,18 @@ jobs:
       - run:
           name: "Laravel"
           command: |
-            echo "Laravel App"
-            {SSH} {USERNAME}@{HOSTNAME} "cd /home/ubuntu/devops && ./laraveldeploy.sh"
- 
+              echo "Preparing to deploy to production server"
+              apk add openssh-client
+              'which ssh-agent || (apk add --update openssh)'
+              eval $(ssh-agent -s)
+              echo "$SSH" | tr -d '\r' | ssh-add - > /dev/null
+              mkdir -p ~/.ssh
+              chmod 700 ~/.ssh
+              touch ~/.ssh/known_hosts
+              chmod 644 ~/.ssh/known_hosts
+              ssh-keyscan $PROD_SERVER >> ~/.ssh/known_hosts
+              echo "Deploying to server"
+              ssh -o StrictHostKeyChecking=no $USERNAME@$HOST -t '/home/ubuntu/devops/laraveldeploy.sh'
 
 workflows:
   version: 2
