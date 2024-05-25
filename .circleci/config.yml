@@ -12,7 +12,11 @@ jobs:
       - run:
           name: "SSH into Remote Server"
           command: |
-              'cd /home/ubuntu/devops && ./laraveldeploy.sh'
+              ssh -o StrictHostKeyChecking=no ${USERNAME}@${HOST} -t '/home/ubuntu/devops/deploy.sh'
+      - run:
+          name: "Cleanup SSH Agent"
+          command: |
+              ssh-agent -k
 
 workflows:
   version: 2
