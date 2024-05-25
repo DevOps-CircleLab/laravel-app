@@ -15,11 +15,13 @@ jobs:
               sudo apt-get update && sudo apt-get install -y openssh-client
       - run:
           name: "Install SSH Key"
-          command: |
-              mkdir -p ~/.ssh
+          command: | 
               echo "$SSH" | tr -d '\r' | ssh-add - > /dev/null
-              chmod 600 ~/.ssh/id_rsa
-              ssh-keyscan $HOST >> ~/.ssh/known_hosts
+              mkdir -p ~/.ssh
+              chmod 700 ~/.ssh
+              touch ~/.ssh/known_hosts
+              chmod 644 ~/.ssh/known_hosts
+
       - run:
           name: "SSH into Remote Server"
           command: |
