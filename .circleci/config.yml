@@ -9,7 +9,7 @@ jobs:
           name: "Login with SSH"
           command: |
             ssh $USERNAME@$HOST
-      
+            echo "$KNOWN_HOST_KEY" >> ~/.ssh/known_hosts
       - run:
           name: "Laravel"
           command: |
