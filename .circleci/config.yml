@@ -17,7 +17,7 @@ jobs:
           name: "Install SSH Key"
           command: |
               mkdir -p ~/.ssh
-              echo "$SSH" | tr -d '\r' > ~/.ssh/id_rsa
+              echo "$SSH" | tr -d '\r' | ssh-add - > /dev/null
               chmod 600 ~/.ssh/id_rsa
               ssh-keyscan $HOST >> ~/.ssh/known_hosts
       - run:
@@ -28,7 +28,6 @@ jobs:
           name: "Cleanup SSH Agent"
           command: |
               ssh-agent -k
-
 
 workflows:
   version: 2
