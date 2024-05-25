@@ -1,0 +1,20 @@
+version: 2.1
+orbs:
+  ssh: circleci/ssh@1.0.0
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - deploy-laravel
+
+jobs:
+  deploy-laravel:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - ssh/ssh:
+          command: "cd /home/ubuntu/devops && ./laraveldeploy.sh"
+          fingerprints: ${SSHKEY}
+          hosts: ${HOST}
+          user: ${USERNAME}
